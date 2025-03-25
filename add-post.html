@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Post - DevCol</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">DevCol</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="add-post.html">Add Post</a></li>
+                    <li class="nav-item"><a class="nav-link" href="bookmarks.html">Bookmarks</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="#">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Add Post Form -->
+    <section class="container my-5 flex-grow-1">
+        <h2 class="mb-4">Add a New Post</h2>
+        <div class="mb-3">
+            <label for="postTitle" class="form-label">Title</label>
+            <input type="text" id="postTitle" class="form-control" placeholder="Enter post title">
+        </div>
+        <div class="mb-3">
+            <label for="postContent" class="form-label">Content</label>
+            <textarea id="postContent" class="form-control" rows="3" placeholder="Enter post content"></textarea>
+        </div>
+        <button class="btn btn-success" onclick="addNewPost()">Add Post</button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center py-3 mt-auto">
+        <p>DevCol &copy; 2025. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+            window.addNewPost = function () {
+                const titleInput = document.getElementById('postTitle');
+                const contentInput = document.getElementById('postContent');
+
+                const title = titleInput.value.trim();
+                const content = contentInput.value.trim();
+
+                if (title && content) {
+                    // Get existing posts from localStorage
+                    const existingPosts = JSON.parse(localStorage.getItem('posts')) || [];
+                    
+                    // Create a new post object with next available ID
+                    const newPost = {
+                        id: existingPosts.length + 1,
+                        title: title,
+                        content: content,
+                        likes: 0,
+                        comments: [],
+                        bookmarked: false,
+                        followed: false
+                    };
+
+                    // Add to existing posts array and save to localStorage
+                    existingPosts.push(newPost);
+                    localStorage.setItem('posts', JSON.stringify(existingPosts))
+                    
+                    // Redirect to home page
+                    window.location.href = 'index.html';
+
+                    // Clear inputs
+                    titleInput.value = '';
+                    contentInput.value = '';
+
+                    alert('Post added successfully!');
+                } else {
+                    alert('Please fill in both title and content.');
+                }
+            };
+        });
+    </script>
+</body>
+
+</html>

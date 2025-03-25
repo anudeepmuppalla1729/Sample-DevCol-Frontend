@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - DevCol</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">DevCol</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="projects.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="add-post.html">Add Post</a></li>
+                    <li class="nav-item"><a class="nav-link" href="bookmarks.html">Bookmarks</a></li>
+                    <li class="nav-item">
+                        <button class="nav-link btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#addProjectModal">Add Project</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Add Project Modal -->
+    <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProjectModalLabel">Add New Project</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="projectForm">
+                        <div class="mb-3">
+                            <label for="projectTitle" class="form-label">Project Title</label>
+                            <input type="text" class="form-control" id="projectTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="projectDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectTechnologies" class="form-label">Technologies Used</label>
+                            <input type="text" class="form-control" id="projectTechnologies" placeholder="e.g., React, Node.js, MongoDB" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectGithub" class="form-label">GitHub Link</label>
+                            <input type="url" class="form-control" id="projectGithub" placeholder="https://github.com/username/project">
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectImage" class="form-label">Project Image URL</label>
+                            <input type="url" class="form-control" id="projectImage" placeholder="https://example.com/image.jpg">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Add Project</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects Section -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Featured Projects</h2>
+        <div id="projects-container" class="row g-4">
+            <!-- Projects will be inserted dynamically -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center py-3 mt-auto">
+        <p>DevCol &copy; 2025. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample projects data
+            const projectsData = [
+                {
+                    id: 1,
+                    title: 'E-Commerce Platform',
+                    description: 'A full-stack e-commerce platform with real-time inventory management.',
+                    technologies: ['React', 'Node.js', 'MongoDB'],
+                    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZUByZ6GBLWVuNPgoRUGKkBIsgQosLLmbG3Q&s',
+                    github: 'https://github.com/username/ecommerce',
+                    likes: 0,
+                    comments: [],
+                    bookmarked: false
+                },
+                {
+                    id: 2,
+                    title: 'Task Management App',
+                    description: 'A collaborative task management application with real-time updates.',
+                    technologies: ['Vue.js', 'Firebase'],
+                    image: 'https://via.placeholder.com/300x200/2ecc71/ffffff?text=Task+Manager',
+                    github: 'https://github.com/username/taskmanager',
+                    likes: 0,
+                    comments: [],
+                    bookmarked: false
+                },
+                {
+                    id: 3,
+                    title: 'Weather Dashboard',
+                    description: 'A weather dashboard with interactive maps and forecasting.',
+                    technologies: ['JavaScript', 'Weather API', 'Leaflet.js'],
+                    image: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?w=300&h=200&fit=crop',
+                    github: 'https://github.com/username/weather',
+                    likes: 0,
+                    comments: [],
+                    bookmarked: false
+                }
+            ];
+
+            // Initialize localStorage with sample data if empty
+            if (!localStorage.getItem('projects')) {
+                localStorage.setItem('projects', JSON.stringify(projectsData));
+            }
+
+            const projects = JSON.parse(localStorage.getItem('projects'));
+            const projectsContainer = document.getElementById('projects-container');
+
+            function renderProjects() {
+                projectsContainer.innerHTML = '';
+                projects.forEach(project => {
+                    const projectElement = document.createElement('div');
+                    projectElement.classList.add('col-md-6', 'col-lg-4');
+                    projectElement.innerHTML = `
+                        <div class="card custom-card h-100">
+                            <img src="${project.image}" class="card-img-top" alt="${project.title} project screenshot" 
+                                 onerror="this.onerror=null; this.src='https://placehold.co/300x200/e9ecef/495057?text=Project+Image';"
+                                 loading="lazy">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title post-title">${project.title}</h5>
+                                <p class="card-text flex-grow-1">${project.description}</p>
+                                <div class="technologies mb-3">
+                                    ${project.technologies.map(tech => `<span class="badge bg-primary me-1">${tech}</span>`).join('')}
+                                </div>
+                                <a href="${project.github}" class="btn btn-sm btn-outline-secondary mb-3" target="_blank">
+                                    <i class="bi bi-github"></i> View on GitHub
+                                </a>
+                                <div class="d-flex justify-content-between align-items-center mt-auto action-buttons">
+                                    <button class="btn btn-link like-btn" onclick="likeProject(${project.id})">
+                                        <i class="bi bi-heart-fill"></i>
+                                        <span id="likes-${project.id}">${project.likes}</span>
+                                    </button>
+                                    <button class="btn btn-link bookmark-btn" onclick="bookmarkProject(${project.id})">
+                                        <i class="bi ${project.bookmarked ? 'bi-bookmark-fill' : 'bi-bookmark'}"></i>
+                                    </button>
+                                </div>
+                                <div class="mt-3">
+                                    <input type="text" id="comment-${project.id}" placeholder="Add a comment" class="form-control comment-input">
+                                    <button class="btn btn-sm btn-secondary mt-1" onclick="addComment(${project.id})">Comment</button>
+                                </div>
+                                <ul class="list-group mt-2" id="comments-${project.id}"></ul>
+                            </div>
+                        </div>
+                    `;
+                    projectsContainer.appendChild(projectElement);
+                });
+            }
+
+            window.likeProject = function(projectId) {
+                const project = projects.find(p => p.id === projectId);
+                project.likes++;
+                document.getElementById(`likes-${project.id}`).innerText = project.likes;
+                localStorage.setItem('projects', JSON.stringify(projects));
+            };
+
+            window.bookmarkProject = function(projectId) {
+                const project = projects.find(p => p.id === projectId);
+                if (project) {
+                    project.bookmarked = !project.bookmarked;
+                    localStorage.setItem('projects', JSON.stringify(projects));
+                    const bookmarkBtn = document.querySelector(`[onclick="bookmarkProject(${projectId})"] i`);
+                    if (bookmarkBtn) {
+                        bookmarkBtn.className = `bi ${project.bookmarked ? 'bi-bookmark-fill' : 'bi-bookmark'}`;
+                    }
+                }
+            };
+
+            window.addComment = function(projectId) {
+                const commentInput = document.getElementById(`comment-${projectId}`);
+                const commentText = commentInput.value.trim();
+                if (commentText) {
+                    const project = projects.find(p => p.id === projectId);
+                    project.comments.push(commentText);
+                    commentInput.value = '';
+                    localStorage.setItem('projects', JSON.stringify(projects));
+                    renderComments(projectId);
+                }
+            };
+
+            function renderComments(projectId) {
+                const project = projects.find(p => p.id === projectId);
+                const commentsList = document.getElementById(`comments-${projectId}`);
+                commentsList.innerHTML = '';
+                project.comments.forEach(comment => {
+                    const commentItem = document.createElement('li');
+                    commentItem.classList.add('list-group-item', 'comment-item');
+                    commentItem.innerText = comment;
+                    commentsList.appendChild(commentItem);
+                });
+            }
+
+            // Handle project form submission
+            document.getElementById('projectForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const newProject = {
+                    id: projects.length + 1,
+                    title: document.getElementById('projectTitle').value,
+                    description: document.getElementById('projectDescription').value,
+                    technologies: document.getElementById('projectTechnologies').value.split(',').map(tech => tech.trim()),
+                    image: document.getElementById('projectImage').value || 'https://via.placeholder.com/300x200',
+                    github: document.getElementById('projectGithub').value,
+                    likes: 0,
+                    comments: [],
+                    bookmarked: false
+                };
+
+                projects.push(newProject);
+                localStorage.setItem('projects', JSON.stringify(projects));
+                renderProjects();
+
+                // Close modal and reset form
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addProjectModal'));
+                modal.hide();
+                e.target.reset();
+            });
+
+            // Initial render
+            renderProjects();
+        });
+    </script>
+</body>
+
+</html>
