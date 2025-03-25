@@ -55,7 +55,7 @@ body {
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* Card Styling */
+
 .custom-card {
     background-color: var(--card-bg);
     border: none;
@@ -69,7 +69,6 @@ body {
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Action Buttons */
 .action-buttons button {
     font-size: 1.2rem;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
