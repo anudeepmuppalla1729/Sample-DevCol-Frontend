@@ -29,4 +29,4 @@ DevCol is a web-based platform designed for developers to connect, share project
 - A modern web browser (Chrome, Firefox, Safari, Edge)
 
 ### Installation
-1. Clone the repository:
+1. Clone the repository: https://github.com/anudeepmuppalla1729/Sample-DevCol-Frontend.git
