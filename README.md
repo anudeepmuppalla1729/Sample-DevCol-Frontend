@@ -16,7 +16,7 @@ DevCol is a web-based platform designed for developers to connect, share project
 
 - HTML5
 - CSS3
-- JavaScript (ES6+)
+- JavaScript 
 - Bootstrap 5
 - Local Storage for data persistence
 
